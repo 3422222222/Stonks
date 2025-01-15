@@ -1,2 +1,2 @@
 # Stonks
-pipalnagar bank crazy
+pipalnagar bank do be crazy
