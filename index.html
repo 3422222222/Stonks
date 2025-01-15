@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Account System</title>
+  <style>
+    /* CSS */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://static.businessworld.in/stock-market-trends-and-investors_20240516085810original_image_48.webp');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: white;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #fff;
+    }
+
+    .logo {
+      width: 100px;
+      height: auto;
+      margin: 0 auto 20px;
+    }
+
+    input, select {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+      color: #000;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    p {
+      text-align: center;
+      color: #f8d7da;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Logo -->
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ0cZf-kDumde7NfB9zSCAhUEzthJEMcdSQg&s" alt="Bank Logo" class="logo">
+
+    <h1>Bank Account System</h1>
+    <div id="login-section">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <select id="bank-select">
+        <option value="" disabled selected>Select Your Bank</option>
+        <option value="HDFC Bank">HDFC Bank</option>
+        <option value="Pipalnagar Bank">Pipalnagar Bank</option>
+      </select>
+      <button id="login-btn">Login</button>
+      <p id="login-message"></p>
+    </div>
+
+    <div id="account-section" class="hidden">
+      <h2>Welcome to <span id="selected-bank"></span></h2>
+      <p>Your current balance is: <strong>$<span id="balance">0</span></strong></p>
+      <input type="number" id="amount" placeholder="Enter amount">
+      <button id="deposit-btn">Deposit</button>
+      <button id="withdraw-btn">Withdraw</button>
+      <p id="transaction-message"></p>
+    </div>
+  </div>
+
+  <script>
+    // User account data
+    const userAccount = {
+      username: "user",
+      password: "pass",
+      balance: 1000, // Initial balance
+    };
+
+    // Login functionality
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const selectedBank = document.getElementById('bank-select').value;
+
+      if (!selectedBank) {
+        document.getElementById('login-message').textContent = "Please select a bank.";
+        return;
+      }
+
+      if (username === userAccount.username && password === userAccount.password) {
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('account-section').classList.remove('hidden');
+        document.getElementById('balance').textContent = userAccount.balance.toFixed(2);
+        document.getElementById('selected-bank').textContent = selectedBank;
+        document.getElementById('login-message').textContent = "";
+      } else {
+        document.getElementById('login-message').textContent = "Invalid username or password.";
+      }
+    });
+
+    // Deposit functionality
+    document.getElementById('deposit-btn').addEventListener('click', () => {
+      const amount = parseFloat(document.getElementById('amount').value);
+      if (amount > 0) {
+        userAccount.balance += amount;
+        document.getElementById('balance').textContent = userAccount.balance.toFixed(2);
+        document.getElementById('transaction-message').textContent = `Successfully deposited $${amount.toFixed(2)}.`;
+      } else {
+        document.getElementById('transaction-message').textContent = "Please enter a valid amount.";
+      }
+    });
+
+    // Withdraw functionality
+    document.getElementById('withdraw-btn').addEventListener('click', () => {
+      const amount = parseFloat(document.getElementById('amount').value);
+      if (amount > 0 && amount <= userAccount.balance) {
+        userAccount.balance -= amount;
+        document.getElementById('balance').textContent = userAccount.balance.toFixed(2);
+        document.getElementById('transaction-message').textContent = `Successfully withdrew $${amount.toFixed(2)}.`;
+      } else if (amount > userAccount.balance) {
+        document.getElementById('transaction-message').textContent = "Insufficient balance.";
+      } else {
+        document.getElementById('transaction-message').textContent = "Please enter a valid amount.";
+      }
+    });
+  </script>
+</body>
+</html>
